@@ -4,7 +4,7 @@ import {MainComponent} from "./main.component";
 import {UrlPermission} from "../services/url-permission/url-permission.service";
 
 const routes: Routes = [
-  { path: '', component: MainComponent}
+  { path: 'main', component: MainComponent, canActivate: [UrlPermission] }
 ];
 
 @NgModule({

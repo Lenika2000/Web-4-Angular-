@@ -9,6 +9,8 @@ import {tap} from "rxjs/operators";
 @Injectable()
 export class AuthService {
 
+  public authenticated: boolean = false;
+
   constructor(private http: HttpClient, private router: Router) { }
 
   createAccount(user: UserCredentials) {
@@ -26,6 +28,7 @@ export class AuthService {
 
         localStorage.setItem('authToken', <string>token);
         localStorage.setItem('currentUser', JSON.stringify(user));
+        this.authenticated = true;
       }, error => {
         console.log('login error: ' + error);
       }));
@@ -39,6 +42,7 @@ export class AuthService {
     return this.http.post(AppComponent.API_URL + '/users/logout', user).subscribe(
       data => {
         this.router.navigate(['auth/login']).then(r => console.log(r));
+        this.authenticated = false;
       },
       error => {
         console.log('logout error: ' + error);

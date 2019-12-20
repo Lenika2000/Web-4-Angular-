@@ -6,6 +6,7 @@ import { CheckPointsComponent } from './check-points/check-points.component';
 import {MainRoutingModule} from "./main-routing.module";
 import {FormsModule} from "@angular/forms";
 import {MainComponent} from "./main.component";
+import {UrlPermission} from "../services/url-permission/url-permission.service";
 
 @NgModule({
   imports: [
@@ -13,6 +14,7 @@ import {MainComponent} from "./main.component";
     MainRoutingModule,
     FormsModule
   ],
+  providers: [UrlPermission],
   declarations: [MainComponent, InfoComponent, HistoryComponent, CheckPointsComponent]
 })
 export class MainModule { }
