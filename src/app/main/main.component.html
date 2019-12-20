@@ -1,0 +1,23 @@
+<nav id="header" class="navbar navbar-expand-lg fixed-top ">
+  <div class="navbar container">
+    <ul class="nav navbar-nav">
+      <li class="to-left" id="more-info-ico" (click)="showMoreInfo()">
+        <svg>
+          <line stroke="violet" stroke-width="2" x1="0" x2="20" y1="3" y2="3"></line>
+          <line stroke="violet" stroke-width="2" x1="0" x2="20" y1="9" y2="9"></line>
+          <line stroke="violet" stroke-width="2" x1="0" x2="20" y1="15" y2="15"></line>
+        </svg>
+      </li>
+    </ul>
+    <ul class="nav navbar-nav float-left">
+      <li ><a href="#" (click)="logOut()">LogOut</a></li>
+    </ul>
+  </div>
+</nav>
+<div class="container">
+  <div id="more-info" #moreInfo style="visibility: hidden" >
+    <app-info [username]="currentUser.username"></app-info>
+  </div>
+  <app-check-points></app-check-points>
+  <app-history></app-history>
+</div>
