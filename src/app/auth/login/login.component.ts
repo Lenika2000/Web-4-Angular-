@@ -1,40 +1,37 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import {Router} from "@angular/router";
-import {UserCredentials} from "../../model/user-credentials";
-import {AuthService} from "../../services/auth/auth.service";
-import {HttpErrorResponse} from "@angular/common/http";
+import { Component, OnInit, ViewEncapsulation } from '@angular/core'; /*импорт функции декоратора*/
+import {Router} from '@angular/router'; /*отвечает за навигацию*/
+import {User} from '../../model/user';
+import {AuthService} from '../../services/auth/auth.service';
+import {HttpErrorResponse} from '@angular/common/http';
 
 
 @Component({
-  selector: 'app-login',
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css'],
-  encapsulation: ViewEncapsulation.None
+  selector: 'app-login', /*тег html, идентифицирующий эту директиву в шаблоне index.html*/
+  templateUrl: './login.component.html', /*адрес шаблона Angular компонента */
+  styleUrls: ['./login.component.css'], /*файл, содержащий css cтили, используемые в данном компоненте*/
 })
-export class LoginComponent implements OnInit {
-  user: UserCredentials = new UserCredentials();
+export class LoginComponent { /*данный класс можем использовать в ругих модулях*/
+  user: User = new User();
   errorMessage: string;
 
   constructor(private authService: AuthService, private router: Router) {
   }
 
-  ngOnInit() {
-  }
-
   login() {
+    /*с помощью subscribe ожидаем результат*/
     this.authService.logIn(this.user).subscribe(
-      resp => this.router.navigate(['/main']),
+      resp => this.router.navigate(['/main']), /*если успешно уходим на main*/
       (err: HttpErrorResponse) => {
         console.log(err);
         switch (err.status) {
           case 0:
-            this.errorMessage = "Unable to connect to backend service";
+            this.errorMessage = 'Невозможно подключиться к серверу';
             break;
           case 401:
-            this.errorMessage = "username or password is wrong";
+            this.errorMessage = 'Введен неверный пароль';
             break;
           default:
-            this.errorMessage = "unknown error " + err.status;
+            this.errorMessage = 'Неизвестная ошибка ' + err.status;
         }
       });
   }

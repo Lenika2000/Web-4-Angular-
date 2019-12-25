@@ -1,6 +1,6 @@
 import {Component, ElementRef, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
-import {AuthService} from "../services/auth/auth.service";
-import {UserCredentials} from "../model/user-credentials";
+import {AuthService} from '../services/auth/auth.service';
+import {User} from '../model/user';
 
 @Component({
   selector: 'app-main',
@@ -8,26 +8,15 @@ import {UserCredentials} from "../model/user-credentials";
   styleUrls: ['./main.component.css'],
   encapsulation: ViewEncapsulation.None
 })
-export class MainComponent implements OnInit {
-  currentUser: UserCredentials;
-  section: string;
-  @ViewChild("moreInfo")
-  infoBlock: ElementRef;
+export class MainComponent {
+  currentUser: User;
 
   constructor(private authService: AuthService) {
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
   }
 
-  ngOnInit() {
-    this.section = window.location.pathname.substr(1);
-  }
-
   logOut() {
     this.authService.logOut();
-  }
-
-  showMoreInfo() {
-    this.infoBlock.nativeElement.style.visibility = this.infoBlock.nativeElement.style.visibility?'':'hidden';
   }
 
 }

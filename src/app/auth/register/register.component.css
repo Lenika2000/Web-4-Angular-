@@ -23,7 +23,7 @@
  * Card component
  */
 .card {
-  background-color: #F7F7F7;
+  background-color: rgba(131, 72, 64, 0.52);
   /* just in case there no content*/
   padding: 20px 25px 30px;
   margin: 0 auto 25px;
@@ -91,6 +91,12 @@
   box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgb(104, 145, 162);
 }
 
+label, footer {
+  color: white;
+  font-weight: 700;
+  font-size: 14px;
+}
+
 .btn.btn-signin,.btn-cancel {
   /*background-color: #4d90fe; */
   background-color: rgb(104, 145, 162);
@@ -109,12 +115,12 @@
 }
 
 .btn.btn-cancel {
-  background-color: rgb(255, 34, 24);
+  background-color: rgb(209, 56, 42);
 }
 .btn.btn-signin:hover,
 .btn.btn-signin:active,
 .btn.btn-signin:focus {
-  background-color: rgb(12, 97, 33);
+  background-color: rgb(77, 110, 55);
 }
 
 .forgot-password {
@@ -126,3 +132,13 @@
 .forgot-password:focus{
   color: rgb(12, 97, 33);
 }
+
+footer {
+  float : right;
+}
+.alert {
+  padding: .5rem;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+

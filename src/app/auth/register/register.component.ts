@@ -1,8 +1,8 @@
 import {Component, OnInit, ViewEncapsulation} from '@angular/core';
-import {Router} from "@angular/router";
-import {UserCredentials} from "../../model/user-credentials";
-import {AuthService} from "../../services/auth/auth.service";
-import {HttpErrorResponse} from "@angular/common/http";
+import {Router} from '@angular/router';
+import {User} from '../../model/user';
+import {AuthService} from '../../services/auth/auth.service';
+import {HttpErrorResponse} from '@angular/common/http';
 
 @Component({
   selector: 'app-register',
@@ -11,7 +11,7 @@ import {HttpErrorResponse} from "@angular/common/http";
   encapsulation: ViewEncapsulation.None
 })
 export class RegisterComponent implements OnInit {
-  user: UserCredentials = new UserCredentials();
+  user: User = new User();
   errorMessage: string;
 
   constructor(private accountService: AuthService, private router: Router) {
@@ -23,19 +23,19 @@ export class RegisterComponent implements OnInit {
   register() {
     this.accountService.createAccount(this.user).subscribe(data => {
         this.router.navigate(['/auth/login']).then();
-      }, (err:HttpErrorResponse) => {
+      }, (err: HttpErrorResponse) => {
         console.log(err);
         switch (err.status) {
           case 0:
-            this.errorMessage = "Unable to connect to backend service";
+            this.errorMessage = 'Невозможно подключиться к серверу';
             break;
           case 409:
-            this.errorMessage = "username already exist";
+            this.errorMessage = 'Пользователь с данным именем уже существует';
             break;
           default:
-            this.errorMessage = "unknown error "+err.status;
+            this.errorMessage = 'Неизвестная ошибка ' + err.status;
         }
       }
-    )
+    );
   }
 }

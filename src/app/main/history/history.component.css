@@ -1,8 +1,8 @@
 #point-history-card {
-  width: 80%;
+  width: 100%;
   letter-spacing: 3px;
   padding: 10px;
-  margin-top: 80px;
+  margin-top: 70px;
   margin-bottom: 50px;
 }
 
@@ -22,4 +22,56 @@ button{
 
 .last-cell {
   padding-right: 10px;
+}
+
+.tabelArea {
+  height: 400px;
+  overflow-y:auto;
+}
+
+table.answer_table {
+  text-align: center;
+  margin: auto;
+  font-weight: 300;
+  color: white; /* цвет шрифта наследуется всеми тэгами td таблицы */
+}
+
+
+table.answer_table  thead th {
+  background: rgb(255, 197, 254);
+  width: 100px;
+}
+
+table.answer_table  tbody tr:nth-child(1n) {
+  background: rgb(233, 73, 57);
+}
+
+table.answer_table tbody tr:nth-child(2n) {
+  background: rgba(233, 73, 57,0.5);
+}
+
+table.answer_table tr td {
+  border-right: 1px solid #dfdfdf;
+}
+
+.tdScroll {
+  width:65px;
+  overflow:auto;
+  text-align: center;
+  margin:0 auto;
+}
+
+.tdScroll::-webkit-scrollbar-track , ::-webkit-scrollbar-track{
+  background-color: rgba(13, 0, 60, 0.17);
+  box-shadow:1px 1px 3px #ffcde8 inset;
+  margin: 3px;
+
+}
+
+.tdScroll::-webkit-scrollbar-thumb, ::-webkit-scrollbar-thumb { /* цвет бегунка полосы, а так же его закругление. */
+  background-color: rgb(233, 73, 57);
+}
+
+.tdScroll::-webkit-scrollbar , ::-webkit-scrollbar {  /*Основная ширина полосы прокрутки.*/
+  height: 6px;
 }

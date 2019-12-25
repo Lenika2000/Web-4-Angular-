@@ -1,6 +1,6 @@
 import {Component, OnInit, ViewEncapsulation} from '@angular/core';
-import {Point} from "../../model/point";
-import {PointsService} from "../../services/points/points.service";
+import {Point} from '../../model/point';
+import {PointsService} from '../../services/points/points.service';
 
 @Component({
   selector: 'app-history',
@@ -12,8 +12,9 @@ export class HistoryComponent implements OnInit {
   public points: Point[];
 
   constructor(private service: PointsService) { }
-
+/*при инициализации компонента*/
   ngOnInit() {
+    /*приходит измененный массив*/
     this.service.points.subscribe(value => this.points = value);
     this.service.getPoints();
   }

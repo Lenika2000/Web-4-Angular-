@@ -1,11 +1,11 @@
-import { Component } from '@angular/core';
+import { Component } from '@angular/core'; /*импорт функции декоратора*/
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  selector: 'app-root', /*тег html, идентифицирующий эту директиву в шаблоне index.html*/
+  templateUrl: './app.component.html', /*адрес шаблона Angular компонента */
+  styleUrls: ['./app.component.css'] /*файл, содержащий css cтили, используемые в данном компоненте*/
 })
 export class AppComponent {
-  static API_URL = 'http://localhost:8080/api';
-  title = 'Lab4-Web';
+  static API_URL = 'http://localhost:37780/api';
+
 }

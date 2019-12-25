@@ -1,23 +1,22 @@
-import {Point} from "./point";
-import {ElementRef} from "@angular/core";
+import {Point} from './point';
+import {ElementRef} from '@angular/core';
 
 export class Graphic {
 
   constructor(private canvas: ElementRef) {
   }
 
+
   drawPoint(point: Point) {
 
-    let x = point.x, y = point.y, r = point.r, hit = point.result;
+    const x = point.x, y = point.y, r = point.r, hit = point.result;
+    const context = this.canvas.nativeElement.getContext('2d');
 
-    console.log('Marking point ' + x + ', ' + y + ', ' + hit);
+    const ctx = this.canvas.nativeElement.getContext('2d');
 
-    let context = this.canvas.nativeElement.getContext("2d");
-
-    context.beginPath();
-    context.rect(Math.round(150 + ((x / 5) * 130)) - 3, Math.round(150 - ((y / 5) * 130)) - 3, 6, 6);
-    context.closePath();
-    context.strokeStyle = 'black';
+    ctx.beginPath();
+    ctx.arc(150 + x * 30, 150 - y * 30, 2, 0, 2 * Math.PI, true);
+    ctx.closePath();
 
     let color = 'red';
 
@@ -25,138 +24,156 @@ export class Graphic {
       color = 'lime';
     }
 
-    context.fillStyle = color;
-    context.fill();
-    context.stroke();
+    ctx.strokeStyle = color;
+    ctx.fillStyle = color;
+    ctx.fill();
+    ctx.stroke();
+
 
   }
 
   drawGraphic(r) {
-    console.log("Drawing graphic with R="+r)
-    let context = this.canvas.nativeElement.getContext("2d");
-    context.clearRect(0, 0, this.canvas.nativeElement.width, this.canvas.nativeElement.height);
+    console.log('Drawing graphic with R=' + r);
+    const ctx = this.canvas.nativeElement.getContext('2d');
 
-    // rectangle
-    context.beginPath();
-    context.rect(150, 150-r*13, 130*(r/5), (r)*13);
-    context.closePath();
-    context.strokeStyle = "#2f9aff";
-    context.fillStyle = "#2f9aff";
-    context.fill();
-    context.stroke();
+    ctx.clearRect(0, 0, 305, 305);
+    ctx.fillStyle = 'rgb(255, 162, 211)';
+    ctx.strokeStyle = 'rgb(60, 16, 44)';
 
-    // sector
-    context.beginPath();
-    context.moveTo(150, 150);
-    context.arc(150, 150, 65*(r/5), 0, Math.PI/2, false);
-    context.closePath();
-    context.strokeStyle = "#2f9aff";
-    context.fillStyle = "#2f9aff";
-    context.fill();
-    context.stroke();
+    this.drawCoordinatePlane(ctx);
+    /*отрисовка координатных прямых*/
+    ctx.fillStyle = '#ffc10799';
+    this.drawFigures(r, ctx);
+    this.drawNumbers(ctx);
 
-    // triangle
-    context.beginPath();
-    context.moveTo(150, 150);
-    context.lineTo(150-(130*(r/5)), 150);
-    context.lineTo(150, 150-r*13);
-    context.lineTo(150, 150);
-    context.closePath();
-    context.strokeStyle = "#2f9aff";
-    context.fillStyle = "#2f9aff";
-    context.fill();
-    context.stroke();
+  }
 
-    // axes
-    context.beginPath();
-    context.font = "10px Verdana";
-    context.strokeStyle = "black";
-    context.fillStyle = "black";
-    context.moveTo(150, 0);
-    context.lineTo(150, 300);
-    context.moveTo(150, 0);
-    context.lineTo(145, 15);
-    context.moveTo(150, 0);
-    context.lineTo(155, 15);
-    context.fillText("Y", 160, 10);
-    context.moveTo(0, 150);
-    context.lineTo(300, 150);
-    context.moveTo(300, 150);
-    context.lineTo(285, 145);
-    context.moveTo(300, 150);
-    context.lineTo(285, 155);
-    context.fillText("X", 290, 130);
 
-    // Y parts
-    context.moveTo(145, 20);
-    context.lineTo(155, 20);
-    context.fillText(' 5', 160, 20);
-    context.moveTo(145, 46);
-    context.lineTo(155, 46);
-    context.fillText(' 4', 160, 46);
-    context.moveTo(145, 72);
-    context.lineTo(155, 72);
-    context.fillText(' 3', 160, 72);
-    context.moveTo(145, 98);
-    context.lineTo(155, 98);
-    context.fillText(' 2', 160, 98);
-    context.moveTo(145, 124);
-    context.lineTo(155, 124);
-    context.fillText(' 1', 160, 124);
+  drawCoordinatePlane(ctx) {
+    ctx.beginPath();
+    ctx.fillStyle = '#000000';
+    ctx.moveTo(0, 150);
+    ctx.lineTo(305, 150);
+    /*ось ОХ*/
+    ctx.fillText('X', 290, 140);
+    /*стрелочка на оси ОХ*/
+    ctx.moveTo(305, 150);
+    ctx.lineTo(300, 145);
+    ctx.moveTo(305, 150);
+    ctx.lineTo(300, 155);
 
-    context.moveTo(145, 176);
-    context.lineTo(155, 176);
-    context.fillText('-1', 160, 176);
-    context.moveTo(145, 202);
-    context.lineTo(155, 202);
-    context.fillText('-2', 160, 202);
-    context.moveTo(145, 228);
-    context.lineTo(155, 228);
-    context.fillText('-3', 160, 228);
-    context.moveTo(145, 254);
-    context.lineTo(155, 254);
-    context.fillText('-4', 160, 254);
-    context.moveTo(145, 280);
-    context.lineTo(155, 280);
-    context.fillText('-5', 160, 280);
+    /*ось Y*/
+    ctx.moveTo(150, 0);
+    ctx.lineTo(150, 305);
+    ctx.fillText('Y', 160, 10);
+    /*стрелочка на оси Y*/
+    ctx.moveTo(150, 0);
+    ctx.lineTo(155, 5);
+    ctx.moveTo(150, 0);
+    ctx.lineTo(145, 5);
+    ctx.stroke();
+  }
 
-    // X parts
-    context.moveTo(20, 145);
-    context.lineTo(20, 155);
-    context.fillText('-5', 13, 140);
-    context.moveTo(46, 145);
-    context.lineTo(46, 155);
-    context.fillText('-4', 39, 140);
-    context.moveTo(72, 145);
-    context.lineTo(72, 155);
-    context.fillText('-3', 65, 140);
-    context.moveTo(98, 145);
-    context.lineTo(98, 155);
-    context.fillText('-2', 91, 140);
-    context.moveTo(124, 145);
-    context.lineTo(124, 155);
-    context.fillText('-1', 117, 140);
+  drawNumbers(ctx) {
+    /*деления на ОY*/
+    ctx.beginPath();
+    ctx.fillStyle = '#000000';
+    ctx.strokeStyle = '#000000';
+    ctx.moveTo(145, 5);
+    ctx.lineTo(155, 5);
+    ctx.fillText(5, 160, 0);
+    ctx.moveTo(145, 30);
+    ctx.lineTo(155, 30);
+    ctx.fillText(4, 160, 33);
+    ctx.moveTo(145, 60);
+    ctx.lineTo(155, 60);
+    ctx.fillText(3, 160, 63);
+    ctx.moveTo(145, 90);
+    ctx.lineTo(155, 90);
+    ctx.fillText(2, 160, 93);
+    ctx.moveTo(145, 120);
+    ctx.lineTo(155, 120);
+    ctx.fillText(1, 160, 123);
+    ctx.fillText(0, 140, 163); // ноль в центре координат
+    ctx.moveTo(145, 180);
+    ctx.lineTo(155, 180);
+    ctx.fillText(-1, 160, 183);
+    ctx.moveTo(145, 210);
+    ctx.lineTo(155, 210);
+    ctx.fillText(-2, 160, 213);
+    ctx.moveTo(145, 240);
+    ctx.lineTo(155, 240);
+    ctx.fillText(-3, 160, 243);
+    ctx.moveTo(145, 270);
+    ctx.lineTo(155, 270);
+    ctx.fillText(-4, 160, 273);
+    ctx.moveTo(145, 300);
+    ctx.lineTo(155, 300);
+    ctx.fillText(-5, 160, 303);
 
-    context.moveTo(176, 145);
-    context.lineTo(176, 155);
-    context.fillText(' 1', 169, 140);
-    context.moveTo(202, 145);
-    context.lineTo(202, 155);
-    context.fillText(' 2', 195, 140);
-    context.moveTo(228, 145);
-    context.lineTo(228, 155);
-    context.fillText(' 3', 221, 140);
-    context.moveTo(254, 145);
-    context.lineTo(254, 155);
-    context.fillText(' 4', 247, 140);
-    context.moveTo(280, 145);
-    context.lineTo(280, 155);
-    context.fillText(' 5', 273, 140);
+    /*Деления на OX*/
 
-    context.closePath();
-    context.strokeStyle = "black";
-    context.fillStyle = "black";
-    context.stroke();
+    ctx.moveTo(2, 145);
+    ctx.lineTo(2, 155);
+    ctx.fillText(-5, 0, 163);
+    ctx.moveTo(30, 145);
+    ctx.lineTo(30, 155);
+    ctx.fillText(-4, 25, 163);
+    ctx.moveTo(60, 145);
+    ctx.lineTo(60, 155);
+    ctx.fillText(-3, 55, 163);
+    ctx.moveTo(90, 145);
+    ctx.lineTo(90, 155);
+    ctx.fillText(-2, 85, 163);
+    ctx.moveTo(120, 145);
+    ctx.lineTo(120, 155);
+    ctx.fillText(-1, 115, 163);
 
+    ctx.moveTo(180, 145);
+    ctx.lineTo(180, 155);
+    ctx.fillText(1, 177, 163);
+    ctx.moveTo(210, 145);
+    ctx.lineTo(210, 155);
+    ctx.fillText(2, 207, 163);
+    ctx.moveTo(240, 145);
+    ctx.lineTo(240, 155);
+    ctx.fillText(3, 237, 163);
+    ctx.moveTo(270, 145);
+    ctx.lineTo(270, 155);
+    ctx.fillText(4, 267, 163);
+    ctx.moveTo(300, 145);
+    ctx.lineTo(300, 155);
+    ctx.fillText(5, 297, 163);
+
+    ctx.stroke();
+  }
+
+  drawFigures(selectedR_value, ctx) {
+    /*прямоугольник*/
+    ctx.beginPath();
+    ctx.rect(150, 150, selectedR_value * 15, -selectedR_value * 30);
+    ctx.closePath();
+    ctx.fill();
+    ctx.stroke();
+
+    /*треугольник*/
+    ctx.beginPath();
+    ctx.moveTo(150 - (selectedR_value * 15), 150);
+    ctx.lineTo(150, 150 + selectedR_value * 30);
+    ctx.lineTo(150, 150);
+    ctx.lineTo(150 - (selectedR_value * 15), 150);
+    ctx.closePath();
+    ctx.fill();
+    ctx.stroke();
+
+    /*полукруг*/
+    ctx.beginPath();
+    ctx.moveTo(150, 150);
+    ctx.arc(150, 150, selectedR_value * 30, 0, Math.PI / 2, false);
+    ctx.closePath();
+    ctx.fill();
+    ctx.stroke();
+
+    this.drawCoordinatePlane(ctx);
   }
 }

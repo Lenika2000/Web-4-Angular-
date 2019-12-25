@@ -3,11 +3,11 @@ import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 import { AuthModule } from './auth/auth.module';
 import { MainModule } from './main/main.module';
-import { AuthService } from "./services/auth/auth.service";
-import { PointsService } from "./services/points/points.service";
-import { HttpClientModule } from "@angular/common/http";
-import { FormsModule } from "@angular/forms";
-import { routing } from "./app-routing.module";
+import { AuthService } from './services/auth/auth.service';
+import { PointsService } from './services/points/points.service';
+import { HttpClientModule } from '@angular/common/http';
+import { FormsModule } from '@angular/forms';
+import { routing } from './app-routing.module';
 
 
 @NgModule({

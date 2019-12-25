@@ -1,14 +1,16 @@
-<table id="point-history-card" class="container block">
+<div class="tabelArea" id="point-history-card">
+<table class="answer_table">
   <tr>
     <th>X</th>
     <th>Y</th>
     <th>R</th>
-    <th class="last-cell">Result</th>
+    <th class="last-cell">Попадание</th>
   </tr>
-  <tr *ngFor="let point of points">
-    <td>{{point.x | number:'.0-3'}}</td>
+  <tr *ngFor="let point of points"> <!--*ngFor директива для вывода данных из массива -->
+    <td>{{point.x | number:'.0-3'}}</td> <!-- оставляем три знака после запятой -->
     <td>{{point.y | number:'.0-3'}}</td>
     <td>{{point.r}}</td>
-    <td class="last-cell">{{point.result?"hit":"miss"}}</td>
+    <td class="last-cell">{{point.result?"+":"-"}}</td>
   </tr>
 </table>
+</div>
