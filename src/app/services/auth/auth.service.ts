@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Router} from '@angular/router';
 import {AppComponent} from '../../app.component';
 import {User} from '../../model/user';
@@ -12,6 +12,17 @@ export class AuthService {
   public authenticated = false;
 
   constructor(private http: HttpClient, private router: Router) { }
+
+  private getHeaders(): HttpHeaders {
+    const token: string = localStorage.getItem('authToken');
+
+    const headers = new HttpHeaders().set('Authorization', 'Bearer ' + token);
+
+    headers.append('Accept', 'application/json');
+    headers.append('Content-Type', 'application/json');
+
+    return headers;
+  }
 
   createAccount(user: User) {
     return this.http.post(AppComponent.API_URL + '/users/register', user);
@@ -32,16 +43,21 @@ export class AuthService {
 
   logOut() {
     const user: User = JSON.parse(localStorage.getItem('currentUser'));
-    localStorage.removeItem('authToken');
-    localStorage.removeItem('currentUser');
 
-    return this.http.post(AppComponent.API_URL + '/users/logout', user).subscribe(
+    return this.http.post(AppComponent.API_URL + '/users/logout', user, {headers: this.getHeaders()}).subscribe(
       data => {
-        this.router.navigate(['auth/login']).then(r => console.log(r));
         this.authenticated = false;
       },
       error => {
         console.log('logout error: ' + error);
+      })
+      // Действия, которые делаем в самом конце
+      .add(() => {
+        localStorage.removeItem('authToken');
+        localStorage.removeItem('currentUser');
+        // Надо обновить страницу, чтобы стили корректно подгрузились и так как данных о пользователе уже нет
+        // будет автоматический редирект на страницу логина
+        window.location.reload();
       });
   }
 

@@ -14,7 +14,7 @@ export class PointsService {
 
   constructor(private http: HttpClient, private authService: AuthService) { }
 
-  private r;
+  private r = 1;
   public setR(r) {
     this.r = r;
   }
@@ -61,9 +61,8 @@ export class PointsService {
   }
 
   public updatePoint(point: Point) {
-    const body = {id: point.id, x: point.x, y: point.y, r: point.r};
-    return this.http.post(AppComponent.API_URL + '/points/updatePoint', body, {headers: this.getHeaders()}).toPromise();
-
+    const body = { id: point.id, x: point.x, y: point.y, r: point.r };
+    return this.http.put(AppComponent.API_URL + '/points', body, {headers: this.getHeaders()}).toPromise();
   }
 
 }
