@@ -75,3 +75,4 @@ table.answer_table tr td {
 .tdScroll::-webkit-scrollbar , ::-webkit-scrollbar {  /*Основная ширина полосы прокрутки.*/
   height: 6px;
 }
+

@@ -1,31 +1,31 @@
 <div class="{{isDesktopDisplay()?'':'flex-g-center'}}">
   <form id="formId" class="block {{isDesktopDisplay()?'desktop-form':''}}" name="form-check"
         (ngSubmit)="addPoint()" #f="ngForm" novalidate>
-    <div class="alert alert-danger" role="alert" *ngIf="errorMessage">{{errorMessage}}</div>
+
 
     <label class="badge badge-pill badge-warning" for="X">X</label><br>
     <div id="X">
       <table>
         <tr>
-          <td><input id="-3X" type="radio" value="-3" name="X" #x (change)="setX(x.value)" checked>
+          <td><input id="-3X" type="radio" value="-3" name="X" #x (change)="setX($event.target.value)" checked>
             <label class="radio" for="-3X">-3</label></td>
-          <td><input id="-2X" type="radio" value="-2" name="X" #x (change)="setX(x.value)">
+          <td><input id="-2X" type="radio" value="-2" name="X" #x (change)="setX($event.target.value)">
             <label class="radio" for="-2X">-2</label></td>
-          <td><input id="-1X" type="radio" value="-1" name="X" #x (change)="setX(x.value)">
+          <td><input id="-1X" type="radio" value="-1" name="X" #x (change)="setX($event.target.value)">
             <label class="radio" for="-1X">-1</label></td>
-          <td><input id="0X" type="radio" value="0" name="X" #x (change)="setX(x.value)">
+          <td><input id="0X" type="radio" value="0" name="X" #x (change)="setX($event.target.value)">
             <label class="radio" for="0X">0</label></td>
-          <td><input id="1X" type="radio" value="1" name="X" #x (change)="setX(x.value)">
+          <td><input id="1X" type="radio" value="1" name="X" #x (change)="setX($event.target.value)">
             <label class="radio" for="1X">1</label></td>
         </tr>
         <tr>
-          <td><input id="2X" type="radio" value="2" name="X" #x (change)="setX(x.value)">
+          <td><input id="2X" type="radio" value="2" name="X" #x (change)="setX($event.target.value)">
             <label class="radio" for="2X">2</label></td>
-          <td><input id="3X" type="radio" value="3" name="X" #x (change)="setX(x.value)">
+          <td><input id="3X" type="radio" value="3" name="X" #x (change)="setX($event.target.value)">
             <label class="radio" for="3X">3</label></td>
-          <td><input id="4X" type="radio" value="4" name="X" #x (change)="setX(x.value)">
+          <td><input id="4X" type="radio" value="4" name="X" #x (change)="setX($event.target.value)">
             <label class="radio" for="4X">4</label></td>
-          <td><input id="5X" type="radio" value="5" name="X" #x (change)="setX(x.value)">
+          <td><input id="5X" type="radio" value="5" name="X" #x (change)="setX($event.target.value)">
             <label class="radio" for="5X">5</label></td>
         </tr>
       </table>
@@ -33,9 +33,10 @@
 
     <div class="form-group" [ngClass]="{ 'has-error': f.submitted}">
       <label class="badge badge-pill badge-warning" for="y">Y</label>
-      <input type="text" class="form-control" id="y" name="yyy" placeholder="Введите Y от -3 до 3" [(ngModel)]="point.y"
-             #y="ngModel" autocomplete="off" required/>
+      <input type="text" class="form-control" id="y" name="y" placeholder="Введите Y от -3 до 3" [(ngModel)]="point.y"
+             #y="ngModel" autocomplete="off" (ngModelChange)="checkY()" required/>
     </div>
+    <div class="alert alert-danger" role="alert" [hidden]="isHidden" *ngIf="errorMessage">{{errorMessage}}</div>
 
     <label class="badge badge-pill badge-warning" for="R">R</label><br>
     <div id="R">
@@ -53,12 +54,12 @@
       <label class="radio" for="5R">5</label></td>
       </table>
     </div>
-    <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit">Отправить</button>
+    <button class="btn btn-lg btn-primary btn-block btn-signin"  type="submit">Отправить</button>
 
   </form>
 </div>
 <div class="{{isDesktopDisplay()?'':'flex-g-center'}}">
   <canvas #canvas class="block {{isDesktopDisplay()?'desktop-canvas':''}}" width="305" height="305"
-          (click)="addPointFromCanvas()">
+          (click)="addPointFromCanvas($event)">
   </canvas>
 </div>

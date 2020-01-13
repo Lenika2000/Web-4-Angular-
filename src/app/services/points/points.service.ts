@@ -5,6 +5,7 @@ import {AppComponent} from '../../app.component';
 import {Point} from '../../model/point';
 import {BehaviorSubject} from 'rxjs';
 import {AuthService} from '../auth/auth.service';
+import {toPromise} from 'rxjs/operator/toPromise';
 
 @Injectable() /*директива для сервисов, чтобы те могли внедряться*/
 export class PointsService {
@@ -12,6 +13,15 @@ export class PointsService {
   public points: BehaviorSubject<Point[]> = new BehaviorSubject<Point[]>([]);
 
   constructor(private http: HttpClient, private authService: AuthService) { }
+
+  private r;
+  public setR(r) {
+    this.r = r;
+  }
+  public getR() {
+    return this.r;
+  }
+
 
   private getHeaders(): HttpHeaders {
     const token: string = localStorage.getItem('authToken');
@@ -48,6 +58,12 @@ export class PointsService {
   public addPoint(point: Point) {
     const body = {x: point.x, y: point.y, r: point.r};
     return this.http.post(AppComponent.API_URL + '/points', body, { headers: this.getHeaders()}).toPromise();
+  }
+
+  public updatePoint(point: Point) {
+    const body = {id: point.id, x: point.x, y: point.y, r: point.r};
+    return this.http.post(AppComponent.API_URL + '/points/updatePoint', body, {headers: this.getHeaders()}).toPromise();
+
   }
 
 }

@@ -5,12 +5,14 @@
     <th>Y</th>
     <th>R</th>
     <th class="last-cell">Попадание</th>
+    <th>Применить R</th>
   </tr>
-  <tr *ngFor="let point of points"> <!--*ngFor директива для вывода данных из массива -->
+  <tr *ngFor="let point of points">
     <td>{{point.x | number:'.0-3'}}</td> <!-- оставляем три знака после запятой -->
     <td>{{point.y | number:'.0-3'}}</td>
     <td>{{point.r}}</td>
     <td class="last-cell">{{point.result?"+":"-"}}</td>
+    <td><button class="btn btn-lg btn-primary btn-block btn-signin" (click)="updatePoint(point)" >Применить</button></td>
   </tr>
 </table>
 </div>

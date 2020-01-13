@@ -37,8 +37,8 @@ export class Graphic {
     const ctx = this.canvas.nativeElement.getContext('2d');
 
     ctx.clearRect(0, 0, 305, 305);
-    ctx.fillStyle = 'rgb(255, 162, 211)';
-    ctx.strokeStyle = 'rgb(60, 16, 44)';
+    ctx.fillStyle = '#c18c1bb8';
+    ctx.strokeStyle = '#000000';
 
     this.drawCoordinatePlane(ctx);
     /*отрисовка координатных прямых*/

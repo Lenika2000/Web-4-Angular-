@@ -4,24 +4,30 @@
 
       <form name="form-signin" (ngSubmit)="f.form.valid && login()" #f="ngForm" novalidate>
       <div class="alert alert-danger" role="alert" *ngIf="errorMessage">{{errorMessage}}</div>
-
       <!-- [ngClass] генерирует css класс в зависимотсти от значений параметров -->
       <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !username.valid }">
         <label for="username">Логин</label>
 
         <input type="text" class="form-control" id="username" name="username"
                [(ngModel)]="user.username" #username="ngModel" required/>
-        <div *ngIf="f.submitted && !username.valid" class="help-block alert alert-danger">Введите имя пользователя</div>
+        <div [hidden]="username.valid || username.untouched" class="alert alert-danger">
+          Введите имя пользователя
+        </div>
       </div>
 
       <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !password.valid }">
         <label for="password">Пароль</label>
         <input type="password" class="form-control" id="password" name="password" [(ngModel)]="user.password"
                #password="ngModel" required/>
-        <div *ngIf="f.submitted && !password.valid" class="help-block alert alert-danger">Введите пароль</div>
+
+        <div [hidden]="password.valid || password.untouched" class="alert alert-danger">
+          Введите пароль
+        </div>
       </div>
 
-      <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit">Войти</button>
+        <button [disabled]="password.invalid || username.invalid"
+                class="btn btn-lg btn-primary btn-block btn-signin" type="submit">Войти</button>
+
     </form>
     <a [routerLink]="['/auth/register']" class="btn btn-link">Зарегистрироваться!</a>
   </div>

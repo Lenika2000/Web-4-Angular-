@@ -1,14 +1,13 @@
 import {Component, ElementRef, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
-import { isNumeric } from 'rxjs/util/isNumeric';
+import {isNumeric} from 'rxjs/util/isNumeric';
 import {HttpErrorResponse} from '@angular/common/http';
 import {AuthService} from '../../services/auth/auth.service';
 import {PointsService} from '../../services/points/points.service';
 import {Point} from '../../model/point';
-import {HistoryComponent} from '../history/history.component';
+// import {HistoryComponent} from '../history/history.component';
 import {Graphic} from '../../model/graphic';
 
 @Component({
-  providers: [HistoryComponent],
   selector: 'app-check-points',
   templateUrl: './check-points.component.html',
   styleUrls: ['./check-points.component.css'],
@@ -19,10 +18,10 @@ export class CheckPointsComponent implements OnInit {
   @ViewChild('canvas')
   canvas: ElementRef;
 
-  point: Point = new Point(0, null, 1, false);
+  point: Point = new Point(null, 0 , null, 1, false);
   errorMessage: string;
-  // private rightX = ['-2', '-1.5', '-1', '-0.5', '0', '0.5', '1', '1.5', '2'];
-  // private rightR = ['-2', '-1.5', '-1', '-0.5', '0', '0.5', '1', '1.5', '2'];
+  isHidden: boolean;
+
   private graphic: Graphic;
 
   constructor(private service: PointsService, private authService: AuthService) {
@@ -36,6 +35,7 @@ export class CheckPointsComponent implements OnInit {
 
   setR(value) {
     this.point.r = value;
+    this.service.setR(value);
     this.drawGraphic(value);
   }
 
@@ -43,15 +43,16 @@ export class CheckPointsComponent implements OnInit {
     this.point.x = value;
   }
 
-  addPoint() {
 
+  checkY() {
     if (this.point.y == null) {
       this.error('Введите Y');
       return false;
     }
 
     if (this.point.y.toString().indexOf(',') !== -1) {
-      this.point.y = Number (this.point.y.toString().replace(',', '.'));
+      this.point.y = Number(this.point.y.toString().replace(',', '.'));
+      this.isHidden = true;
     }
 
 
@@ -62,6 +63,10 @@ export class CheckPointsComponent implements OnInit {
       this.error('Выход за пределы диапазона');
       return false;
     }
+    this.isHidden = true;
+  }
+
+  addPoint() {
 
     this.service.addPoint(this.point).then(data => {
       this.drawPoint(<Point>data);
@@ -79,19 +84,19 @@ export class CheckPointsComponent implements OnInit {
 
     this.service.getPointsRecalculated(r).subscribe(data => (data as Point[]).forEach(p => this.drawPoint(p)),
       (err: HttpErrorResponse) => {
-      console.log('err');
-      if (err.status == 401 || err.status == 403 ) {
-        this.authService.logOut();
-      }
-    });
+        console.log('err');
+        if (err.status == 401 || err.status == 403) {
+          this.authService.logOut();
+        }
+      });
   }
 
-  addPointFromCanvas() {
+  addPointFromCanvas(event) {
 
     const br = this.canvas.nativeElement.getBoundingClientRect();
     const left = br.left; // X координата верхнего левого края канваса
     const top = br.top; // Y координата верхнего левого края канваса
-    const event: MouseEvent = <MouseEvent> window.event;
+    // const event: MouseEvent = <MouseEvent> window.event;
 
     const xCalculated = (event.clientX - 152 - left) / 30;
     const yCalculated = (-(event.clientY - top) + 152) / 30;
@@ -117,6 +122,9 @@ export class CheckPointsComponent implements OnInit {
 
   private error(message: string) {
     this.errorMessage = message;
-    setTimeout(() => {this.errorMessage = null; }, 5000);
+    this.isHidden = false;
+    // setTimeout(() => {
+    //   this.errorMessage = null;
+    // }, 5000);
   }
 }
