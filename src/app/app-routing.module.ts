@@ -8,7 +8,7 @@ import {MainModule} from './main/main.module';
 const routes: Routes = [
   { path: 'auth', loadChildren: () => import('./auth/auth.module').then(m => m.AuthModule)},
   { path: 'main', loadChildren: () => import('./main/main.module').then(m => m.MainModule) },
-  { path: '', redirectTo: 'auth/login', pathMatch: 'full'}
+  { path: '**', redirectTo: 'auth/login', pathMatch: 'full'}
 ];
 
 @NgModule({
