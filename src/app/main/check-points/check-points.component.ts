@@ -6,6 +6,7 @@ import {PointsService} from '../../services/points/points.service';
 import {Point} from '../../model/point';
 // import {HistoryComponent} from '../history/history.component';
 import {Graphic} from '../../model/graphic';
+import {isNumber} from 'util';
 
 @Component({
   selector: 'app-check-points',
@@ -21,6 +22,8 @@ export class CheckPointsComponent implements OnInit {
   point: Point = new Point(null, 0 , null, 1, false);
   errorMessage: string;
   isHidden: boolean;
+
+  valid: boolean;
 
   private graphic: Graphic;
 
@@ -47,6 +50,8 @@ export class CheckPointsComponent implements OnInit {
   checkY() {
     if (this.point.y == null) {
       this.error('Введите Y');
+
+      this.valid = true;
       return false;
     }
 
@@ -55,14 +60,21 @@ export class CheckPointsComponent implements OnInit {
       this.isHidden = true;
     }
 
-
-    if (!isNumeric(this.point.y)) {
+    // tslint:disable-next-line:max-line-length
+    if (!isNumeric(this.point.y) || this.point.y.toString().indexOf('x') !== -1 || this.point.y.toString().indexOf('b') !== -1 || this.point.y.toString().indexOf('o') !== -1) {
       this.error('Некорректное значение Y');
+
+      this.valid = true;
       return false;
     } else if (!(-3 < this.point.y && this.point.y < 3)) {
       this.error('Выход за пределы диапазона');
+      this.valid = true;
       return false;
     }
+
+
+    this.valid = false;
+
     this.isHidden = true;
   }
 
