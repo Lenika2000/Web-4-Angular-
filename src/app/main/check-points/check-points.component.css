@@ -32,12 +32,16 @@ form button {
   margin-right: auto;
 }
 
+.btn.btn-signin {
+  background: rgb(233, 73, 57);
+}
+
 .btn-block {
   width: 150px;
   background: rgb(233, 73, 57);
   text-align: center;
   border-color: #ac401c;
-  margin: 0.5em 3.4em;
+  margin-top: auto;
 }
 
 .btn-block:hover, .btn-block:active, .btn-block:focus {

@@ -15,7 +15,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  /*для работы путей*/
+
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
