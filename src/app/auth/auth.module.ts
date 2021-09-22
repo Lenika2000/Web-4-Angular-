@@ -12,9 +12,7 @@ import {UrlPermission} from '../services/url-permission/url-permission.service';
     AuthRoutingModule,
     FormsModule
   ],
-  /*управление навигацией(фильтр)*/
   providers: [UrlPermission],
-  /*используемые компоненты*/
   declarations: [LoginComponent, RegisterComponent]
 })
 export class AuthModule { }

@@ -24,7 +24,6 @@ export class RegisterComponent implements OnInit {
     this.accountService.createAccount(this.user).subscribe(data => {
         this.router.navigate(['/auth/login']).then();
       }, (err: HttpErrorResponse) => {
-        console.log(err);
         switch (err.status) {
           case 0:
             this.errorMessage = 'Невозможно подключиться к серверу';

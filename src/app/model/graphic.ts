@@ -6,12 +6,8 @@ export class Graphic {
   constructor(private canvas: ElementRef) {
   }
 
-
   drawPoint(point: Point) {
-
     const x = point.x, y = point.y, r = point.r, hit = point.result;
-    const context = this.canvas.nativeElement.getContext('2d');
-
     const ctx = this.canvas.nativeElement.getContext('2d');
 
     ctx.beginPath();
@@ -19,7 +15,6 @@ export class Graphic {
     ctx.closePath();
 
     let color = 'red';
-
     if (hit) {
       color = 'lime';
     }
@@ -28,12 +23,9 @@ export class Graphic {
     ctx.fillStyle = color;
     ctx.fill();
     ctx.stroke();
-
-
   }
 
   drawGraphic(r) {
-    console.log('Drawing graphic with R=' + r);
     const ctx = this.canvas.nativeElement.getContext('2d');
 
     ctx.clearRect(0, 0, 305, 305);
@@ -41,20 +33,21 @@ export class Graphic {
     ctx.strokeStyle = '#000000';
 
     this.drawCoordinatePlane(ctx);
-    /*отрисовка координатных прямых*/
     ctx.fillStyle = '#ffc10799';
-    this.drawFigures(r, ctx);
-    this.drawNumbers(ctx);
-
+    this.drawRectangle(r, ctx);
+    this.drawTriangle(r, ctx);
+    this.drawSemicircle(r, ctx);
+    this.drawCoordinatePlane(ctx);
   }
 
 
   drawCoordinatePlane(ctx) {
     ctx.beginPath();
     ctx.fillStyle = '#000000';
+
+    /*ось ОХ*/
     ctx.moveTo(0, 150);
     ctx.lineTo(305, 150);
-    /*ось ОХ*/
     ctx.fillText('X', 290, 140);
     /*стрелочка на оси ОХ*/
     ctx.moveTo(305, 150);
@@ -72,91 +65,49 @@ export class Graphic {
     ctx.moveTo(150, 0);
     ctx.lineTo(145, 5);
     ctx.stroke();
+
+    this.drawNumbers(ctx);
   }
 
   drawNumbers(ctx) {
-    /*деления на ОY*/
     ctx.beginPath();
     ctx.fillStyle = '#000000';
     ctx.strokeStyle = '#000000';
+
+    /*деления на ОY*/
+    let yLineTo = 0;
     ctx.moveTo(145, 5);
-    ctx.lineTo(155, 5);
-    ctx.fillText(5, 160, 0);
-    ctx.moveTo(145, 30);
-    ctx.lineTo(155, 30);
-    ctx.fillText(4, 160, 33);
-    ctx.moveTo(145, 60);
-    ctx.lineTo(155, 60);
-    ctx.fillText(3, 160, 63);
-    ctx.moveTo(145, 90);
-    ctx.lineTo(155, 90);
-    ctx.fillText(2, 160, 93);
-    ctx.moveTo(145, 120);
-    ctx.lineTo(155, 120);
-    ctx.fillText(1, 160, 123);
-    ctx.fillText(0, 140, 163); // ноль в центре координат
-    ctx.moveTo(145, 180);
-    ctx.lineTo(155, 180);
-    ctx.fillText(-1, 160, 183);
-    ctx.moveTo(145, 210);
-    ctx.lineTo(155, 210);
-    ctx.fillText(-2, 160, 213);
-    ctx.moveTo(145, 240);
-    ctx.lineTo(155, 240);
-    ctx.fillText(-3, 160, 243);
-    ctx.moveTo(145, 270);
-    ctx.lineTo(155, 270);
-    ctx.fillText(-4, 160, 273);
-    ctx.moveTo(145, 300);
-    ctx.lineTo(155, 300);
-    ctx.fillText(-5, 160, 303);
+    for (let i = 5; i > - 6 ; i-- ) {
+      ctx.lineTo(155, yLineTo);
+      if (i !== 0) {
+        ctx.fillText(i, 160, yLineTo + 3);
+      }
+      yLineTo += 30;
+      ctx.moveTo(145, yLineTo);
+    }
 
     /*Деления на OX*/
-
-    ctx.moveTo(2, 145);
-    ctx.lineTo(2, 155);
-    ctx.fillText(-5, 0, 163);
-    ctx.moveTo(30, 145);
-    ctx.lineTo(30, 155);
-    ctx.fillText(-4, 25, 163);
-    ctx.moveTo(60, 145);
-    ctx.lineTo(60, 155);
-    ctx.fillText(-3, 55, 163);
-    ctx.moveTo(90, 145);
-    ctx.lineTo(90, 155);
-    ctx.fillText(-2, 85, 163);
-    ctx.moveTo(120, 145);
-    ctx.lineTo(120, 155);
-    ctx.fillText(-1, 115, 163);
-
-    ctx.moveTo(180, 145);
-    ctx.lineTo(180, 155);
-    ctx.fillText(1, 177, 163);
-    ctx.moveTo(210, 145);
-    ctx.lineTo(210, 155);
-    ctx.fillText(2, 207, 163);
-    ctx.moveTo(240, 145);
-    ctx.lineTo(240, 155);
-    ctx.fillText(3, 237, 163);
-    ctx.moveTo(270, 145);
-    ctx.lineTo(270, 155);
-    ctx.fillText(4, 267, 163);
-    ctx.moveTo(300, 145);
-    ctx.lineTo(300, 155);
-    ctx.fillText(5, 297, 163);
+    let xLineTo = 0;
+    ctx.moveTo(0, 145);
+    for (let i = 5; i > - 6 ; i-- ) {
+      ctx.lineTo(xLineTo, 155);
+      ctx.fillText(-i, xLineTo - 6, 163);
+      ctx.moveTo(xLineTo + 30, 145);
+      xLineTo += 30;
+    }
 
     ctx.stroke();
   }
 
-  drawFigures(selectedR_value, ctx) {
-    /*прямоугольник*/
+  drawRectangle(selectedR_value, ctx) {
     ctx.beginPath();
     ctx.rect(150, 150, selectedR_value * 15, -selectedR_value * 30);
     ctx.closePath();
     ctx.fill();
     ctx.stroke();
+  }
 
-    /*треугольник*/
+  drawTriangle(selectedR_value, ctx) {
     ctx.beginPath();
     ctx.moveTo(150 - (selectedR_value * 15), 150);
     ctx.lineTo(150, 150 + selectedR_value * 30);
@@ -165,15 +116,14 @@ export class Graphic {
     ctx.closePath();
     ctx.fill();
     ctx.stroke();
+  }
 
-    /*полукруг*/
+  drawSemicircle(selectedR_value, ctx) {
     ctx.beginPath();
     ctx.moveTo(150, 150);
     ctx.arc(150, 150, selectedR_value * 30, 0, Math.PI / 2, false);
     ctx.closePath();
     ctx.fill();
     ctx.stroke();
-
-    this.drawCoordinatePlane(ctx);
   }
 }

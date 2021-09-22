@@ -15,12 +15,9 @@ export class AuthService {
 
   private getHeaders(): HttpHeaders {
     const token: string = localStorage.getItem('authToken');
-
     const headers = new HttpHeaders().set('Authorization', 'Bearer ' + token);
-
     headers.append('Accept', 'application/json');
     headers.append('Content-Type', 'application/json');
-
     return headers;
   }
 
@@ -32,7 +29,6 @@ export class AuthService {
     return this.http.post(AppComponent.API_URL + '/users/login', user)
       .pipe(tap(data => {
         const token = (<ResponseMessage>data).message;
-        /*Сохранение информации о пользователе*/
         localStorage.setItem('authToken', <string>token);
         localStorage.setItem('currentUser', JSON.stringify(user));
         this.authenticated = true;
@@ -51,12 +47,9 @@ export class AuthService {
       error => {
         console.log('logout error: ' + error);
       })
-      // Действия, которые делаем в самом конце
       .add(() => {
         localStorage.removeItem('authToken');
         localStorage.removeItem('currentUser');
-        // Надо обновить страницу, чтобы стили корректно подгрузились и так как данных о пользователе уже нет
-        // будет автоматический редирект на страницу логина
         window.location.reload();
       });
   }

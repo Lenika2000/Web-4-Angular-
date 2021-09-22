@@ -14,9 +14,8 @@ export class HistoryComponent implements OnInit {
   public points: Point[];
 
   constructor(private service: PointsService, private authService: AuthService) { }
-/*при инициализации компонента*/
+
   ngOnInit() {
-    /*приходит измененный массив*/
     this.service.points.subscribe(value => this.points = value);
     this.service.getPoints();
   }
@@ -26,8 +25,7 @@ export class HistoryComponent implements OnInit {
     this.service.updatePoint(point).then(data => {
        this.service.getPoints();
     }).catch((err: HttpErrorResponse) => {
-      console.log('err');
-      if (err.status == 401 || err.status == 403) {
+      if (err.status === 401 || err.status === 403) {
         this.authService.logOut();
       }
     });

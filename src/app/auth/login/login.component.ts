@@ -1,16 +1,16 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core'; /*импорт функции декоратора*/
-import {Router} from '@angular/router'; /*отвечает за навигацию*/
+import { Component} from '@angular/core';
+import {Router} from '@angular/router';
 import {User} from '../../model/user';
 import {AuthService} from '../../services/auth/auth.service';
 import {HttpErrorResponse} from '@angular/common/http';
 
 
 @Component({
-  selector: 'app-login', /*тег html, идентифицирующий эту директиву в шаблоне index.html*/
-  templateUrl: './login.component.html', /*адрес шаблона Angular компонента */
-  styleUrls: ['./login.component.css'], /*файл, содержащий css cтили, используемые в данном компоненте*/
+  selector: 'app-login',
+  templateUrl: './login.component.html',
+  styleUrls: ['./login.component.css'],
 })
-export class LoginComponent { /*данный класс можем использовать в ругих модулях*/
+export class LoginComponent {
   user: User = new User();
   errorMessage: string;
 
@@ -18,11 +18,9 @@ export class LoginComponent { /*данный класс можем исполь�
   }
 
   login() {
-    /*с помощью subscribe ожидаем результат*/
     this.authService.logIn(this.user).subscribe(
-      resp => this.router.navigate(['/main']), /*если успешно уходим на main*/
+      resp => this.router.navigate(['/main']),
       (err: HttpErrorResponse) => {
-        console.log(err);
         switch (err.status) {
           case 0:
             this.errorMessage = 'Невозможно подключиться к серверу';

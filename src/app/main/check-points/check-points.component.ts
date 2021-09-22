@@ -4,9 +4,7 @@ import {HttpErrorResponse} from '@angular/common/http';
 import {AuthService} from '../../services/auth/auth.service';
 import {PointsService} from '../../services/points/points.service';
 import {Point} from '../../model/point';
-// import {HistoryComponent} from '../history/history.component';
 import {Graphic} from '../../model/graphic';
-import {isNumber} from 'util';
 
 @Component({
   selector: 'app-check-points',
@@ -22,7 +20,6 @@ export class CheckPointsComponent implements OnInit {
   point: Point = new Point(null, 0 , null, 1, false);
   errorMessage: string;
   isHidden: boolean;
-
   invalid: boolean;
 
   private graphic: Graphic;
@@ -46,7 +43,6 @@ export class CheckPointsComponent implements OnInit {
     this.point.x = value;
   }
 
-
   checkY() {
     if (this.point.y == null) {
       this.error('Введите Y');
@@ -60,12 +56,12 @@ export class CheckPointsComponent implements OnInit {
       this.isHidden = true;
     }
 
+    const isHexDecimal = this.point.y.toString().indexOf('x') !== -1;
+    const isBinary = this.point.y.toString().indexOf('b') !== -1;
+    const isOctal = this.point.y.toString().indexOf('o') !== -1;
 
-
-
-    if (!isNumeric(this.point.y) || this.point.y.toString().indexOf('x') !== -1 || this.point.y.toString().indexOf('b') !== -1 || this.point.y.toString().indexOf('o') !== -1) {
+    if (!isNumeric(this.point.y) || isHexDecimal || isBinary || isOctal) {
       this.error('Некорректное значение Y');
-
       this.invalid = true;
       return false;
     } else if (!(-3 < this.point.y && this.point.y < 3)) {
@@ -73,21 +69,16 @@ export class CheckPointsComponent implements OnInit {
       this.invalid = true;
       return false;
     }
-
-
     this.invalid = false;
-
     this.isHidden = true;
   }
 
   addPoint() {
-
     this.service.addPoint(this.point).then(data => {
       this.drawPoint(<Point>data);
       this.service.getPoints();
     }).catch((err: HttpErrorResponse) => {
-      console.log('err');
-      if (err.status == 401 || err.status == 403) {
+      if (err.status === 401 || err.status === 403) {
         this.authService.logOut();
       }
     });
@@ -95,22 +86,18 @@ export class CheckPointsComponent implements OnInit {
   }
 
   getPointsRecalculated(r) {
-
     this.service.getPointsRecalculated(r).subscribe(data => (data as Point[]).forEach(p => this.drawPoint(p)),
       (err: HttpErrorResponse) => {
-        console.log('err');
-        if (err.status == 401 || err.status == 403) {
+        if (err.status === 401 || err.status === 403) {
           this.authService.logOut();
         }
       });
   }
 
   addPointFromCanvas(event) {
-
     const br = this.canvas.nativeElement.getBoundingClientRect();
-    const left = br.left; // X координата верхнего левого края канваса
-    const top = br.top; // Y координата верхнего левого края канваса
-    // const event: MouseEvent = <MouseEvent> window.event;
+    const left = br.left;
+    const top = br.top;
 
     const xCalculated = (event.clientX - 152 - left) / 30;
     const yCalculated = (-(event.clientY - top) + 152) / 30;
@@ -137,8 +124,5 @@ export class CheckPointsComponent implements OnInit {
   private error(message: string) {
     this.errorMessage = message;
     this.isHidden = false;
-    // setTimeout(() => {
-    //   this.errorMessage = null;
-    // }, 5000);
   }
 }
